@@ -70,7 +70,6 @@ class _GameScreenState extends State<GameScreen> {
       ));
       return;
     }
-
     await SaveService.instance.recordRun(won: false);
     final failReason = reason ?? FailReason.quit;
     AnalyticsService.instance.logLevelFail(
@@ -101,7 +100,7 @@ class _GameScreenState extends State<GameScreen> {
           return SafeArea(
             minimum: const EdgeInsets.all(4),
             child: LayoutBuilder(builder: (context, constraints) {
-              // Flame world and Flutter controls use the same reference scale.
+              // Flame and Flutter overlays now share the same base scale.
               final worldScale = math.min(
                 constraints.maxWidth / 1920,
                 constraints.maxHeight / 1080,
@@ -157,7 +156,6 @@ class _GameScreenState extends State<GameScreen> {
 
 class _RotateDeviceView extends StatelessWidget {
   const _RotateDeviceView();
-
   @override
   Widget build(BuildContext context) => const ColoredBox(
         color: Color(0xFF17324D),
@@ -184,7 +182,6 @@ class _PauseOverlay extends StatelessWidget {
     required this.onRestart,
     required this.onExit,
   });
-
   final VoidCallback onResume;
   final VoidCallback onRestart;
   final VoidCallback onExit;
@@ -197,10 +194,8 @@ class _PauseOverlay extends StatelessWidget {
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         const PlaneBadge(label: 'PLANE DRIVER', icon: Icons.flight_rounded),
         const SizedBox(height: 12),
-        Text(
-          l10n.pause.toUpperCase(),
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
+        Text(l10n.pause.toUpperCase(),
+            style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: 20),
         SizedBox(
           width: double.infinity,

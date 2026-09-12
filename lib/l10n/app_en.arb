@@ -1,0 +1,57 @@
+{
+  "@@locale": "en",
+  "appTitle": "Plane Driver",
+  "@appTitle": {
+    "description": "The app title"
+  },
+  "play": "Play",
+  "credits": "Credits",
+  "exit": "Exit",
+  "back": "Back",
+  "continueText": "Continue",
+  "restart": "Restart",
+  "resume": "Resume",
+  "levelSelect": "Select Level",
+  "vehicleSelect": "Select Plane",
+  "locked": "Locked",
+  "unlock": "Unlock",
+  "restorePurchases": "Restore Purchases",
+  "purchasesRestored": "Purchases restored",
+  "purchaseFailed": "Purchase failed",
+  "free": "Free",
+  "levelComplete": "Level Complete",
+  "gameOver": "Game Over",
+  "levelFailed": "Level Failed",
+  "tryAgain": "Try Again",
+  "stars": "Stars",
+  "time": "Time",
+  "bestTime": "Best Time",
+  "nextLevel": "Next Level",
+  "unlockBetterPlane": "Unlock a Better Plane",
+  "noThanks": "No Thanks",
+  "pause": "Pause",
+  "settings": "Settings",
+  "creditsText": "Plane Driver\nDeveloped by Tarda Games",
+  "level": "Level {levelNumber}",
+  "@level": {
+    "description": "Level number display",
+    "placeholders": {
+      "levelNumber": {
+        "type": "int"
+      }
+    }
+  },
+  "planeSpeed": "Speed",
+  "planeHandling": "Handling",
+  "planeAcceleration": "Acceleration",
+  "planeName0": "Starter",
+  "planeName1": "Swift",
+  "planeName2": "Bolt",
+  "planeName3": "Glider",
+  "planeName4": "Rocket",
+  "planeName5": "Tank",
+  "planeName6": "Ace",
+  "planeName7": "Jet",
+  "planeName8": "Racer",
+  "planeName9": "Turbo"
+}
