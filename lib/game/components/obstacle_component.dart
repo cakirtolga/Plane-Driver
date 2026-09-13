@@ -68,7 +68,15 @@ class ObstacleComponent extends PositionComponent {
         definition.position.y,
       );
       size = ObstacleSpriteRepository.gameplaySizeForKey(_spriteKey) * definition.size;
-      _image = await ObstacleSpriteRepository.imageFor(_spriteKey);
+      // Environment sprites are optional during the gameplay pass as well.
+      // Never let one missing/corrupt image abort the whole level before the
+      // player, remaining obstacles and EXIT can be mounted.
+      try {
+        _image = await ObstacleSpriteRepository.imageFor(_spriteKey);
+      } catch (error) {
+        debugPrint('Obstacle sprite unavailable; using placeholder: $error');
+        _image = null;
+      }
     }
   }
 
