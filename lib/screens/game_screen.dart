@@ -101,11 +101,15 @@ class _GameScreenState extends State<GameScreen> {
             minimum: const EdgeInsets.all(4),
             child: LayoutBuilder(builder: (context, constraints) {
               // Flame and Flutter overlays now share the same base scale.
-              final worldScale = math.min(
-                constraints.maxWidth / 1920,
-                constraints.maxHeight / 1080,
-              );
-              final controlScale = (worldScale * 1.55).clamp(.42, .82);
+              final widthScale = constraints.maxWidth / 1920;
+              final heightScale = constraints.maxHeight / 1080;
+              final containScale = math.min(widthScale, heightScale);
+              final widePhone =
+                  constraints.maxWidth / constraints.maxHeight > 1.82;
+              final worldScale = widePhone
+                  ? math.min(widthScale, containScale * 1.25)
+                  : containScale;
+              final controlScale = (worldScale * 1.50).clamp(.40, .82);
               final edgeGap = (12 * controlScale).clamp(6.0, 14.0);
               return Stack(fit: StackFit.expand, children: [
                 Positioned.fill(child: GameWidget(game: _game)),
