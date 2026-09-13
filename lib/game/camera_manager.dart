@@ -21,15 +21,17 @@ class CameraManager {
   static void fitToScreen(CameraComponent camera, Vector2 screenSize) {
     if (screenSize.x <= 0 || screenSize.y <= 0) return;
 
-    final containZoom = math.min(
-      screenSize.x / GameConstants.gameWidth,
-      screenSize.y / GameConstants.gameHeight,
-    ).clamp(0.01, 4.0).toDouble();
+    final widthZoom = screenSize.x / GameConstants.gameWidth;
+    final heightZoom = screenSize.y / GameConstants.gameHeight;
+    final containZoom = math.min(widthZoom, heightZoom);
+    final responsiveZoom = screenSize.x / screenSize.y > 1.82
+        ? math.min(widthZoom, containZoom * 1.25)
+        : containZoom;
 
     camera.viewfinder
       ..anchor = Anchor.center
       ..position = GameConstants.logicalSize / 2
-      ..zoom = containZoom;
+      ..zoom = responsiveZoom.clamp(0.01, 4.0).toDouble();
   }
 
   /// Visible world rectangle at the current device aspect ratio. Useful for
@@ -43,10 +45,12 @@ class CameraManager {
         GameConstants.gameHeight,
       );
     }
-    final zoom = math.min(
-      screenSize.x / GameConstants.gameWidth,
-      screenSize.y / GameConstants.gameHeight,
-    );
+    final widthZoom = screenSize.x / GameConstants.gameWidth;
+    final heightZoom = screenSize.y / GameConstants.gameHeight;
+    final containZoom = math.min(widthZoom, heightZoom);
+    final zoom = screenSize.x / screenSize.y > 1.82
+        ? math.min(widthZoom, containZoom * 1.25)
+        : containZoom;
     final visibleW = screenSize.x / zoom;
     final visibleH = screenSize.y / zoom;
     return Rect.fromCenter(
