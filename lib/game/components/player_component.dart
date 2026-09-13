@@ -17,6 +17,7 @@ class PlayerComponent extends PositionComponent with HasGameReference {
 
   final Vehicle vehicle;
   ui.Image? _aircraftImage;
+  static const bool _loadEmbeddedAircraftSprites = false;
 
   bool isCrashed = false;
 
@@ -47,7 +48,19 @@ class PlayerComponent extends PositionComponent with HasGameReference {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    _aircraftImage = await AircraftSpriteRepository.imageFor(vehicle.id);
+    if (!_loadEmbeddedAircraftSprites) {
+      _aircraftImage = null;
+      return;
+    }
+    // Artwork is optional during the gameplay/response pass. A corrupt,
+    // missing or unfinished sprite must never abort PlaneDriverGame.onLoad(),
+    // otherwise obstacles and EXIT are not added to the world either.
+    try {
+      _aircraftImage = await AircraftSpriteRepository.imageFor(vehicle.id);
+    } catch (error) {
+      debugPrint('Player sprite unavailable; using placeholder: $error');
+      _aircraftImage = null;
+    }
   }
 
   double get speed => _speed;
