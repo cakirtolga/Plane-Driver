@@ -24,6 +24,7 @@ class ObstacleComponent extends PositionComponent {
   int _planeVehicleId = 1;
   String? _spriteKey;
   bool _usesDedicatedAircraftSprite = false;
+  static const bool _loadEmbeddedAircraftSprites = false;
 
   @override
   Future<void> onLoad() async {
@@ -33,14 +34,32 @@ class ObstacleComponent extends PositionComponent {
       _usesDedicatedAircraftSprite = ObstacleAircraftSpriteRepository.containsKey(_spriteKey);
       if (_usesDedicatedAircraftSprite) {
         size = ObstacleAircraftSpriteRepository.gameplaySizeForKey(_spriteKey) * definition.size;
-        _image = await ObstacleAircraftSpriteRepository.imageFor(_spriteKey!);
+        if (!_loadEmbeddedAircraftSprites) {
+          _image = null;
+          return;
+        }
+        try {
+          _image = await ObstacleAircraftSpriteRepository.imageFor(_spriteKey!);
+        } catch (error) {
+          debugPrint('Obstacle aircraft sprite unavailable: $error');
+          _image = null;
+        }
       } else {
         size = ObstacleCollisionProfiles.baseSize(definition.kind) * definition.size;
         _planeVehicleId = AircraftSpriteRepository.obstacleVehicleId(
           definition.position.x,
           definition.position.y,
         );
-        _image = await AircraftSpriteRepository.imageFor(_planeVehicleId);
+        if (!_loadEmbeddedAircraftSprites) {
+          _image = null;
+          return;
+        }
+        try {
+          _image = await AircraftSpriteRepository.imageFor(_planeVehicleId);
+        } catch (error) {
+          debugPrint('Fallback aircraft sprite unavailable: $error');
+          _image = null;
+        }
       }
     } else {
       _spriteKey = definition.spriteKey ?? ObstacleSpriteRepository.defaultKeyFor(
